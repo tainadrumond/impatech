@@ -9,5 +9,3 @@ def sum_cummulative(numbers_list):
 numbers_list = [-2 , 3 , 4 , -1, 1]
 sums_list = sum_cummulative(numbers_list)
 print(sums_list)
-
-        

@@ -12,6 +12,7 @@ def generate_graph(x: list, y: list, nameX: str, nameY: str, graphTitle: str):
         displays the graph for the input info
     '''
     plt.plot(x, y)
+    plt.grid(True)
 
     plt.xlabel(nameX)
     plt.ylabel(nameY)

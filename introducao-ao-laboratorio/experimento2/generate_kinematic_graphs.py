@@ -30,15 +30,27 @@ def read_graphs_file(file_name):
                 t.append(float(values[0]))
                 x.append(float(values[1].removesuffix('\n')))
     except:
-        print('Invalid file format!')
+        raise ValueError('Formato de arquivo inválido!')
     return [x, t]
 
 file_name = str(input('Insira o nome do arquivo de dados: '))
-pace = int(input('Insira o número de passos usado como delimitador da média móvel: '))
-
 graphs = read_graphs_file(file_name)
 position = graphs[0]
 time = graphs[1]
+
+pace = int(input('Insira o número de passos usado como delimitador da média móvel: '))
+if pace < 1:
+    raise ValueError("O número de passos não pode ser menor que 1")
+
+apply_moving_average_in_velocity = str(input("Deseja aplicar a média móvel sobre a velocidade? (S/N) "))
+if ((apply_moving_average_in_velocity != "S") & (apply_moving_average_in_velocity != "N")):
+    raise ValueError("Resposta inválida!")
+
+velocity_pace = 0
+if (apply_moving_average_in_velocity == "S"):
+    velocity_pace = int(input("Insira o número de passos usado como delimitador da média móvel para a velocidade: "))
+    if (velocity_pace < 1):
+        raise ValueError("O número de passos não pode ser menor que 1")
 
 # POSITION:
 position_moving_average = moving_average.make_moving_average(position, pace)
@@ -54,11 +66,13 @@ graphs_visualization.generate_graph(time, velocity, 'Tempo (s)', 'Velocidade (v)
 
 
 # ACCELERATION:
-velocity_moving_average = moving_average.make_moving_average(velocity, pace)
-length = len(time)
-time = time[pace:length-pace] # necessary because the moving average reduces the total of points
+parsed_velocity = velocity
+if (apply_moving_average_in_velocity == "S"):
+    parsed_velocity = moving_average.make_moving_average(velocity, pace)
+    length = len(time)
+    time = time[pace:length-pace] # necessary because the moving average reduces the total of points
 
-acceleration = derivation.calculate_derivation(velocity_moving_average, time)
+acceleration = derivation.calculate_derivation(parsed_velocity, time)
 time = time[1:]
 
 graphs_visualization.generate_graph(time, acceleration, 'Tempo', 'Aceleração', 'AxT')

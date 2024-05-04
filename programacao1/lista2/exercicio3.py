@@ -1,6 +1,6 @@
 def average(nums: list):
     sum = 0
-    for num in nums:
+    for num in nums: # soma todos os números da lista na variável sum
         sum += num
     size = len(nums)
     return sum/size

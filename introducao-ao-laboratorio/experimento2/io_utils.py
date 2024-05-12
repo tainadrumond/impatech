@@ -23,21 +23,12 @@ def parse_file_data(file_content: str):
         if (line.startswith('t')):
             continue
         numbers = line.split('	')
-        if (len(numbers) != 2): # in case one of the data columns doesn't have value for this line
+        if (len(numbers) != 2): # in case one of the columns doesn't have data for this line
             continue
         if ((numbers[0] != '') & (numbers[1] != '')):
             t.append(float(numbers[0]))
             y.append(float(numbers[1]))
     return [t, y]
-        
-        
-    
-    # for linha in arquivo:
-            #     if (linha.startswith('t')):
-            #         continue
-            #     values = linha.split('	')
-            #     t.append(float(values[0]))
-            #     x.append(float(values[1].removesuffix('\n')))
 
 def create_output_dir(input_file_path: str) -> str:
     file_name = input_file_path.split('/')[:-1]

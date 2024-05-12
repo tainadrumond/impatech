@@ -111,7 +111,7 @@ acceleration_average = (-1.0) * acceleration_sum / len(acceleration_without_movi
 
 gravitational_potential_energy = []
 for i in range(2, len(position)):
-    gravitational_potential_energy.append(OBJ_MASS * acceleration_average * (-1.0) * (position[len(position)-1] - position[i]))
+    gravitational_potential_energy.append(OBJ_MASS * acceleration_average * (-1.0) * (position[-1] - position[i]))
 
 mechanical_energy = []
 kinetic_energy = kinetic_energy[1:]

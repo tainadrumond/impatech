@@ -11,14 +11,14 @@ class Linked_List():
     
     def add_node(self, value):
         node = self.head
-        while node.next != None:
+        while node.next is not None:
             node = node.next
         node.next = Node(value, None) # Adiciona o elemento como o próximo do node que aponta para None (o último da lista)
     
     def inverte_ordem(self):
         next = self.head.next # O próximo node se tornará o anterior na lista invertida
         current = Node(self.head.value, None)
-        while next != None:
+        while next is not None:
             current = Node(next.value, current) # Cria um node que guarda o valor do próximo node e aponta para o node atual, invertendo a ordem da lista
             next = next.next
         return Linked_List(current) # Retorna a lista invertida, na qual o último node criado é a cabeça
@@ -26,7 +26,7 @@ class Linked_List():
     def __str__(self):
         node = self.head
         values = []
-        while node != None:
+        while node is not None:
             values.append(str(node.value))
             node = node.next
         return ' '.join(values)

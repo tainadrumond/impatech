@@ -16,6 +16,12 @@ class Linked_List():
         node.next = Node(value, None) # Adiciona o elemento como o próximo do node que aponta para None (o último da lista)
     
     def inverte_ordem(self):
+        '''
+        Cria uma nova lista com a ordem invertida do objeto em que foi chamado em tempo O(n)
+        '''
+        if self.head is None:
+            return Linked_List(None)
+        
         next = self.head.next # O próximo node se tornará o anterior na lista invertida
         current = Node(self.head.value, None)
         while next is not None:
@@ -29,7 +35,8 @@ class Linked_List():
         while node is not None:
             values.append(str(node.value))
             node = node.next
-        return ' '.join(values)
+        values.append('None')
+        return '->'.join(values)
         
 head = Node(1, None)
 linked_list = Linked_List(head)
@@ -37,9 +44,19 @@ linked_list.add_node(5)
 linked_list.add_node(2)
 linked_list.add_node(4)
 print("Lista original:", linked_list)
-
 inverted_list = linked_list.inverte_ordem()
 print("Lista invertida:", inverted_list)
+
+linked_list = Linked_List(None)
+print("\nLista original:", linked_list)
+inverted_list = linked_list.inverte_ordem()
+print("Lista invertida:", inverted_list)
+
+linked_list = Linked_List(Node(3, None))
+print("\nLista original:", linked_list)
+inverted_list = linked_list.inverte_ordem()
+print("Lista invertida:", inverted_list)
+
 
 
 # EXERCÍCIO 2
@@ -83,13 +100,9 @@ print("1:", to_roman_numeral(1))
 print("3999:", to_roman_numeral(3999))
 print("4:", to_roman_numeral(4))
 print("9:", to_roman_numeral(9))
-print("58:", to_roman_numeral(58))
-print("1987:", to_roman_numeral(1987))
 print("1666:", to_roman_numeral(1666))
 print("1994:", to_roman_numeral(1994))
-print("3:", to_roman_numeral(3))
 print("30:", to_roman_numeral(30))
-print("300:", to_roman_numeral(300))
 print("3000:", to_roman_numeral(3000))
 
 
@@ -99,45 +112,54 @@ print("\n\nEXERCÍCIO 3")
 print("(a)")
 def potencia(x, n):
     result = 1
-    for i in range(n):
+    abs_n = abs(n)
+    for i in range(abs_n):
         result *= x
+        
+    if n < 0:
+        return 1/result
     return result
 
-print("2^1000 =", potencia(2, 1000))
+print("2^5 =", potencia(2, 5))
+print("2^(-2) =", potencia(2, -2))
+print("3^3 =", potencia(3, 3))
 print("473^0 =", potencia(473, 0))
 print("0^2 =", potencia(0, 2))
 print("1^10000 =", potencia(1, 10000))
 
 # LETRA B
-print("(b)")
-def to_the_power_of_powers_of_two(x, n):
-    '''
-    Função que calcula x elevado à maior potência de 2 que seja menor ou igual a n em tempo log2(n)
-    '''
-    power_of_two = 1
-    power = 1
-    while power_of_two <= n:
-        power_of_two *= 2
-        if power == 1:
-            power = x
-            continue
-        power *= power
-    return {'power': power, 'rest': n-(power_of_two/2)}
-
+print("\n(b)")
 def potencia_b(x, n):
     '''
-    n pode ser escrito como 2^0 + 2^1 + ... + 2^k.
-    Essa função calcula x^n = x^(2^0) * x^(2^1) * ... * x^(2^k) computando cada parcela do produto separadamente. 
+    Função que escreve n como uma soma de potências de 2 
+    e calcula x elevado a cada uma dessas potências separadamente em tempo log(n)
     '''
+    abs_n = abs(n)
+    n_reverse_binary = ''
+    # Escreve n em sua representação em binário de trás para frente (para determinar as somas de potências de 2 equivalentes a n):
+    while abs_n != 0:
+        n_reverse_binary += str(abs_n % 2)
+        abs_n //= 2
+        
     power = 1
-    rest = n
-    while rest != 0:
-        power_of_powers_of_two = to_the_power_of_powers_of_two(x, rest)
-        power *= power_of_powers_of_two['power']
-        rest = power_of_powers_of_two['rest']
-    return power
+    result = 1
+    # Calcula x elevado a cada uma das potências de 2, utilizando a representação em binário de n como referência:
+    for i in n_reverse_binary:
+        if power == 1:
+            power = x
+        else:
+            power *= power
+        if i == '1':
+            # Multiplica os resultados de x elevado às potências de 2 correspondentes às casas com algarismo 1 na representação em binário de n:
+            result *= power
+    
+    if n < 0:
+        return 1/result
+    return result
 
-print("2^1000 =", potencia_b(2, 1000))
+print("2^5 =", potencia_b(2, 5))
+print("2^(-2) =", potencia_b(2, -2))
+print("3^3 =", potencia_b(3, 3))
 print("473^0 =", potencia_b(473, 0))
 print("0^2 =", potencia_b(0, 2))
 print("1^10000 =", potencia_b(1, 10000))
@@ -147,14 +169,17 @@ print("\n\nEXERCÍCIO 4")
 def find_unique_number(numbers):
     unique_numbers_dict = {} # Dicionário que guarda os números que só apareceram uma única vez em numbers
     for n in numbers:
-        if unique_numbers_dict.get(n) == None:
+        if unique_numbers_dict.get(n) is None:
             unique_numbers_dict[n] = 1
         else: # Se o elemento já estava no dicionário, então ele é duplicado
             unique_numbers_dict.pop(n) # Remove o elemento duplicado
     return list(unique_numbers_dict.keys())[0]
 
 print("Número único de [1, 2, 3, 4, 1, 3, 4]:", find_unique_number([1, 2, 3, 4, 1, 3, 4]))
-
+print("Número único de [4, 3, 2, 4, 1, 3, 2]:", find_unique_number([4, 3, 2, 4, 1, 3, 2]))
+print("Número único de [2, 2, 1]:", find_unique_number([2, 2, 1]))
+print("Número único de [99]:", find_unique_number([99]))
+print("Número único de [5, 4, 4, 6, 6]:", find_unique_number([5, 4, 4, 6, 6]))
 
 # EXERCÍCIO 5
 # A complexidade do algoritmo a seguir é O(nm), onde n é o número de strings e m é o tamanho da menor string da lista
@@ -174,6 +199,11 @@ def longest_common_prefix(strings):
         result += letter # Se essa letra é comum a todas as strings na posição i, então adiciona ela no resultado
     return result
 
-print(longest_common_prefix(['flower', 'flow', 'flight']))
+print("['flower', 'flow', 'flight']:", longest_common_prefix(['flower', 'flow', 'flight']))
+print("['test', 'test', 'test']:", longest_common_prefix(['test', 'test', 'test']))
+print("['a', 'ab', 'abc']:", longest_common_prefix(['a', 'ab', 'abc']))
+print("['abc', 'bcd', 'cde']:", longest_common_prefix(['abc', 'bcd', 'cde']))
+print("[]:", longest_common_prefix([]))
+print("['flower']:", longest_common_prefix(['flower']))
               
         

@@ -42,13 +42,13 @@ def gaussian_elimination(A: list) -> dict:
             P.permut(i, first_non_zero_pivot_line_index)
         
         multiplier = U.lines[i].at(i)
-        U.change_line(U.lines[i]*(1/multiplier), i)
+        U.change_line(U.lines[i]*(1/multiplier), i) # Changes the line i to turn the pivot into 1
         L.change_entry(multiplier, i, i)
             
-        for k in range(i+1, U.number_of_lines): # Eliminates every entry below the column pivot
+        for k in range(i+1, U.number_of_lines): # Eliminates every entry below the current column pivot
             if U.at(k, i) == 0:
                 continue
-            multiplier = U.at(k, i)/U.at(i, i)
+            multiplier = U.at(k, i)
             U.change_line(U.lines[k]-(U.lines[i]*multiplier), k)
             L.change_entry(multiplier, k, i)
     

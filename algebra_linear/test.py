@@ -115,3 +115,10 @@ A11 = [[3, 2, 1],
 gaussian_elimination_11 = gaussian_elimination(A11)
 print(f'A:\n{A11}')
 print_gaussian_elimination_result(gaussian_elimination_11)
+
+A12 = [[1, 0, 1],
+    [0, 0, 1],
+    [0, 0, 4],]
+gaussian_elimination_12 = gaussian_elimination(A12)
+print(f'A:\n{A12}')
+print_gaussian_elimination_result(gaussian_elimination_12)

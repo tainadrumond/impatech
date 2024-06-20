@@ -1,3 +1,10 @@
+class DimentionError(Exception):
+    def __init__(self):
+        super().__init__("Inconsistent dimentions.")
+        
+    def __str__(self):
+        return f"Error: {self.args[0]}"
+
 class Vector():
     '''
     Class that represents a vector in R^n.
@@ -20,7 +27,7 @@ class Vector():
         Returns the i-th entry of the vector.
         '''
         if i >= self.length:
-            raise KeyError()
+            raise DimentionError()
         return self.entries[i]
     
     def change_entry(self, value, index):
@@ -28,7 +35,7 @@ class Vector():
         Changes the i-th entry of the vector to the given value.
         '''
         if index >= self.length:
-            raise KeyError
+            raise DimentionError
         self.entries[index] = value 
         
     def copy(self):
@@ -45,7 +52,7 @@ class Vector():
     
     def __sub__(self, other_vector):
         if other_vector.length != self.length:
-            raise KeyError()
+            raise DimentionError()
         new_entries = []
         for i in range(self.length):
             new_entries.append(self.entries[i]-other_vector.entries[i])
@@ -53,7 +60,7 @@ class Vector():
     
     def __add__(self, other_vector):
         if other_vector.length != self.length:
-            raise KeyError()
+            raise DimentionError()
         new_entries = []
         for i in range(self.length):
             new_entries.append(self.entries[i]+other_vector.entries[i])
@@ -73,21 +80,26 @@ class Matrix():
     '''
     def __init__(self, lines: list):
         if len(lines) == 0:
-            raise KeyError()
+            raise DimentionError()
+        
         for i in range(len(lines)-1):
-            if lines[i].length != lines[i+1].length:
-                raise KeyError()
-            
-        self.lines = lines
+            if len(lines[i]) == 0 or len(lines[i]) != len(lines[i+1]):
+                raise DimentionError()
+        
+        vectors = []
+        for i in range(len(lines)):
+            vectors.append(Vector(lines[i]))
+        
+        self.lines = vectors
         self.number_of_lines = len(lines)
-        self.number_of_columns = lines[0].length
+        self.number_of_columns = len(lines[0])
         
     def at(self, i, j):
         '''
         Returns the entry at line i and column j.
         '''
         if i >= self.number_of_lines:
-            raise KeyError()
+            raise DimentionError()
         return self.lines[i].at(j)
     
     def change_line(self, vector: Vector, i):
@@ -95,7 +107,7 @@ class Matrix():
         Changes the i-th line for the given vector
         '''
         if vector.length != self.number_of_columns:
-            raise KeyError()
+            raise DimentionError()
         self.lines[i] = vector
         
     def change_entry(self, value, i, j):
@@ -103,7 +115,7 @@ class Matrix():
         Changes the entry at the i-th line and j-th column for the given value
         '''
         if i >= self.number_of_lines:
-            raise KeyError()
+            raise DimentionError()
         self.lines[i].change_entry(value, j)
         
     def copy(self):
@@ -112,7 +124,7 @@ class Matrix():
         '''
         new_lines = []
         for line in self.lines:
-            new_lines.append(line.copy())
+            new_lines.append(line.entries.copy())
         return Matrix(new_lines)
     
     def permut(self, line_1, line_2):
@@ -120,13 +132,13 @@ class Matrix():
         Permuts line_1 with line_2.
         '''
         if line_1 >= self.number_of_lines or line_2 >= self.number_of_lines:
-            raise KeyError()
+            raise DimentionError()
         self.lines[line_1], self.lines[line_2] = self.lines[line_2], self.lines[line_1]
     
     def __mul__(self, scalar):
         new_lines = []
         for line in self.lines:
-            new_lines.append(line*scalar)
+            new_lines.append((line*scalar).entries.copy())
         return Matrix(new_lines)
     
     def __str__(self):

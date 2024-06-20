@@ -15,7 +15,7 @@ print(v5.at(4))
 
 ############## Matrix
 print("\ntests for Matrix class") 
-m1 = Matrix([v1, v2, v3])
+m1 = Matrix([[1, 0, 0], [0, 0, 0], [1, 2, 3.4]])
 print(m1)
 
 print()
@@ -31,19 +31,87 @@ print(m3.at(2, 2))
 print(m3*2)
 
 ############## Gaussian elimination
-print("\n tests for gaussian elimination")
-gaussian_elimination_1 = gaussian_elimination(m3)
-print(f'A:\n{m3}')
-print(f'P:\n{gaussian_elimination_1['P']}')
-print(f'L:\n{gaussian_elimination_1['L']}')
-print(f'U:\n{gaussian_elimination_1['U']}')
+def print_gaussian_elimination_result(result):
+    print(f'P:\n{result['P']}')
+    print(f'L:\n{result['L']}')
+    print(f'U:\n{result['U']}')
 
-a1 = Vector([0, 2])
-a2 = Vector([0, 1])
-a3 = Vector([8, 6])
-A = Matrix([a1, a2, a3])
-gaussian_elimination_2 = gaussian_elimination(A)
-print(f'A:\n{A}')
-print(f'P:\n{gaussian_elimination_2['P']}')
-print(f'L:\n{gaussian_elimination_2['L']}')
-print(f'U:\n{gaussian_elimination_2['U']}')
+print("\n tests for gaussian elimination")
+A1 = [[4, 3],
+    [6, 3]]
+gaussian_elimination_1 = gaussian_elimination(A1)
+print(f'A:\n{A1}')
+print_gaussian_elimination_result(gaussian_elimination_1)
+
+A2 = [[1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 10]]
+gaussian_elimination_2 = gaussian_elimination(A2)
+print(f'A:\n{A2}')
+print_gaussian_elimination_result(gaussian_elimination_2)
+
+A3 = [[2, 4],
+    [1, 3],
+    [3, 5]]
+gaussian_elimination_3 = gaussian_elimination(A3)
+print(f'A:\n{A3}')
+print_gaussian_elimination_result(gaussian_elimination_3)
+
+A4 = [[2, 4, 2],
+    [4, 8, 4],
+    [6, 12, 6]]
+gaussian_elimination_4 = gaussian_elimination(A4)
+print(f'A:\n{A4}')
+print_gaussian_elimination_result(gaussian_elimination_4)
+
+A5 = [[1, 0, 0],
+    [0, 1, 0],
+    [0, 0, 1]]
+gaussian_elimination_5 = gaussian_elimination(A5)
+print(f'A:\n{A5}')
+print_gaussian_elimination_result(gaussian_elimination_5)
+
+A6 = [[2, 0, 0],
+    [0, 3, 0],
+    [0, 0, 4]]
+gaussian_elimination_6 = gaussian_elimination(A6)
+print(f'A:\n{A6}')
+print_gaussian_elimination_result(gaussian_elimination_6)
+
+A7 = [[0, 2, 1, 3],
+    [4, 5, 6, 7],
+    [8, 9, 10, 11]]
+gaussian_elimination_7 = gaussian_elimination(A7)
+print(f'A:\n{A7}')
+print_gaussian_elimination_result(gaussian_elimination_7)
+
+A8 = [[1, 2, 3],
+    [4, 5, 6],
+    [0, 8, 9],
+    [7, 10, 11]]
+gaussian_elimination_8 = gaussian_elimination(A8)
+print(f'A:\n{A8}')
+print_gaussian_elimination_result(gaussian_elimination_8)
+
+A9 = [[0, 1, 2, 3],
+    [4, 5, 6, 7]]
+gaussian_elimination_9 = gaussian_elimination(A9)
+print(f'A:\n{A9}')
+print_gaussian_elimination_result(gaussian_elimination_9)
+
+A10 = [[1, 0, 3, 4, 5, 6],
+    [0, 1, 2, 3, 4, 5],
+    [0, 0, 1, 2, 3, 4],
+    [1, 1, 1, 1, 1, 1]]
+gaussian_elimination_10 = gaussian_elimination(A10)
+print(f'A:\n{A10}')
+print_gaussian_elimination_result(gaussian_elimination_10)
+
+A11 = [[3, 2, 1],
+    [1, 1, 1],
+    [0, 1, 4],
+    [4, 0, 1],
+    [5, 2, 2]]
+gaussian_elimination_11 = gaussian_elimination(A11)
+print(f'A:\n{A11}')
+print_gaussian_elimination_result(gaussian_elimination_11)

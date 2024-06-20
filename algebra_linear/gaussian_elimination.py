@@ -8,8 +8,8 @@ def build_identity_matrix(n: int) -> Matrix:
     '''
     lines = []
     for i in range(n):
-        lines.append(Vector(size=n))
-        lines[i].change_entry(1, i)
+        lines.append([0]*n)
+        lines[i][i] = 1
     return Matrix(lines)
 
 def find_first_non_zero_pivot_line_index(A: Matrix, j: int) -> int:
@@ -22,14 +22,14 @@ def find_first_non_zero_pivot_line_index(A: Matrix, j: int) -> int:
             return i
     return -1
 
-def gaussian_elimination(A: Matrix) -> dict:
+def gaussian_elimination(A: list) -> dict:
     '''
     Computes the gaussian elimination for matrix A and returns the matrixes P, L and U of PA = LU factorization
     '''
-    identity = build_identity_matrix(A.number_of_lines)
+    U = Matrix(A)
+    identity = build_identity_matrix(U.number_of_lines)
     P = identity.copy()
     L = identity.copy()
-    U = A.copy()
     
     number_of_pivots = min(U.number_of_columns, U.number_of_lines)
     
@@ -45,7 +45,7 @@ def gaussian_elimination(A: Matrix) -> dict:
         U.change_line(U.lines[i]*(1/multiplier), i)
         L.change_entry(multiplier, i, i)
             
-        for k in range(i+1, A.number_of_lines): # Eliminates every entry below the column pivot
+        for k in range(i+1, U.number_of_lines): # Eliminates every entry below the column pivot
             if U.at(k, i) == 0:
                 continue
             multiplier = U.at(k, i)/U.at(i, i)

@@ -151,7 +151,7 @@ class Matrix():
             lines_str.append(str(line))
         return '\n'.join(lines_str)
 
-MIN_NUMBER = -99999999999999999999 
+MIN_NUMBER = float('-inf')
 
 def build_identity_matrix(n: int) -> Matrix:
     '''

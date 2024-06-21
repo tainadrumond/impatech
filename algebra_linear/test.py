@@ -1,5 +1,4 @@
-from matrix import Matrix, Vector
-from gaussian_elimination import gaussian_elimination
+from gaussian_elimination import Matrix, Vector, gaussian_elimination
 
 ############ Vector
 print("tests for Vector class")
@@ -116,9 +115,19 @@ gaussian_elimination_11 = gaussian_elimination(A11)
 print(f'A:\n{A11}')
 print_gaussian_elimination_result(gaussian_elimination_11)
 
-A12 = [[1, 0, 1],
-    [0, 0, 1],
-    [0, 0, 4],]
+A12 = [
+    [0, 0, -1, 2],
+    [-1, -1, 1, 2],
+    [2, 1, -3, 6],
+    [0, 1, -1, 4]
+]
 gaussian_elimination_12 = gaussian_elimination(A12)
 print(f'A:\n{A12}')
 print_gaussian_elimination_result(gaussian_elimination_12)
+
+A13 = [[2, -1, 0],
+    [-1, 2, -1],
+    [0, -1, 2]]
+gaussian_elimination_13 = gaussian_elimination(A13)
+print(f'A:\n{A13}')
+print_gaussian_elimination_result(gaussian_elimination_13)

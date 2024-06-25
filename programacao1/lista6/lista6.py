@@ -5,22 +5,41 @@ def search_insert(ord_list: list, value: int) -> int:
     Função que implementa uma busca binária para retornar o índice de
     um valor na lista recebida em tempo O(log(n))
     '''
+    list_size = len(ord_list)
+    if list_size == 0:
+        return 0
+    
     left_bound = 0
-    right_bound = len(ord_list)-1
+    right_bound = list_size
     current_index = (left_bound + right_bound)//2
     
+    # Busca binária na lista:
     while left_bound != right_bound and ord_list[current_index] != value:
             if (ord_list[current_index] < value):
                 left_bound = current_index+1
             elif (ord_list[current_index] > value):
                 right_bound = current_index-1
             current_index = (left_bound+right_bound)//2
+            
+            # Trata dos casos em que se ultrapassa os limites da lista:
+            if current_index < 0:
+                return 0
+            if current_index > list_size:
+                return list_size
     return current_index
 
 t = [0, 2, 3, 4, 7]
 print(t)
 print("Posição de 5:", search_insert(t, 5))
 print("Posição de 2:", search_insert(t, 2))
+print("Posição de 3.5:", search_insert(t, 3.5))
+print("Posição de -1:", search_insert(t, -1))
+
+t = [0]
+print(t)
+print("Posição de -1:", search_insert(t, -1))
+print("Posição de 0:", search_insert(t, 0))
+print("Posição de 1:", search_insert(t, 1))
 
 
 # EXERCÍCIO 2
@@ -34,7 +53,7 @@ def build_pascal_triangle(n: int) -> list:
     
     triangle = [[1]]
     for i in range(1, n):
-        previous_line = triangle[i-1]
+        previous_line = triangle[i-1] # Seleciona a linha anterior para obter os elementos que estão acima do atual
         new_line = [1] # Adiciona o 1 da borda esquerda da linha
         for j in range(len(previous_line)-1):
             term1 = previous_line[j]
@@ -63,9 +82,14 @@ class Linked_List():
         while node is not None:
             length += 1
             node = node.next
+        # No fim do laço, length terá o número de elementos da lista
         self.length = length
     
     def delete_node(self, value):
+        '''
+        Função que deleta um nó da lista ao alterar o ponteiro do elemento
+        anterior para o próximo elemento.
+        '''
         if self.head is None:
             return
         if self.head.val == value:
@@ -75,23 +99,25 @@ class Linked_List():
         previous = self.head
         current = self.head.next
         while current is not None:
-            if current.val == value:
+            if current.val == value: # Se for o valor procurado, apaga a ligação dele com o anterior
                 previous.next = current.next
+            # Continua a iterar sobre os elementos para procurar aqueles que têm o valor procurado:
             previous = current
             current = current.next
             
     def copy(self):
         '''
-        Returns a copy of the linked list
+        Retorna uma cópia da lista encadeada
         '''
         if self.head is None:
             return Linked_List(None)
         
         new_head = List_Node(self.head.val)
-        new_node = new_head
-        self_node = self.head.next
+        new_node = new_head # Variável para iterar sobre os nós da nova lista
         
+        self_node = self.head.next # Variável para iterar sobre os nós da lista atual
         while self_node is not None:
+            # Adiciona uma cópia de cada nó da lista atual no nova lista
             new_node.next = List_Node(self_node.val)
             new_node = new_node.next
             self_node = self_node.next
@@ -108,12 +134,15 @@ class Linked_List():
         elif other_copy.head is None:
             return self_copy
         
+        # Busca o último elemento do objeto de lista atual:
         node = self_copy.head
         while node.next is not None:
             node = node.next
-        node.next = other_copy.head # Adiciona a cópia de other_list no fim da cópia da lista atual
+        # Adiciona a cópia de other_list no fim da cópia da lista atual:
+        node.next = other_copy.head
         
-        new_list = Linked_List(self_copy.head) # Cria um novo objeto para que o tamanho da lista resultante seja calculado pelo construtor
+        # Cria um novo objeto para que o tamanho da lista resultante seja calculado pelo construtor:
+        new_list = Linked_List(self_copy.head)
         return new_list
         
     def __str__(self):
@@ -157,17 +186,17 @@ def add_polynomial_term_to_dict(term: str, poly_dict: dict):
     elif '^' not in term: # Trata o caso do termo de grau 1 com '^1' implícito
         term_without_x = term[:-1] # Retira o x do fim da string
         coefficient_is_explicit_number = len(term_without_x) != 0 and term_without_x != '+' and term_without_x != '-'
-        coefficient = int(term_without_x) if coefficient_is_explicit_number else 1  # Trata o caso do coeficiente '1' implícito
+        coefficient = int(term_without_x) if coefficient_is_explicit_number else int(term_without_x+'1')  # Trata o caso do coeficiente de módulo '1' implícito
         exponent = 1
     else: # Trata dos casos com o expoente explícito
         numerical_entries = term.split('x^') # Usa o termo 'x^' como separador para obter o coeficiente e o expoente
         if len(numerical_entries) == 2:
-            coefficient_is_explicit_number = numerical_entries[0] != '+' and numerical_entries[1] != '-'
-            coefficient = int(numerical_entries[0]) if coefficient_is_explicit_number else 1 # Pega o coeficiente e trata o caso do coeficiente '1' implícito
+            coefficient_is_explicit_number = numerical_entries[0] != '+' and numerical_entries[0] != '-'
+            coefficient = int(numerical_entries[0]) if coefficient_is_explicit_number else int(numerical_entries[0]+'1') # Pega o coeficiente e trata o caso do coeficiente de módulo '1' implícito
             exponent = int(numerical_entries[1])
         else:
             coefficient = 1 # Caso do coeficiente 1 implícito
-            exponent = int(numerical_entries[0])
+            exponent = int(numerical_entries[0]) 
     
     if poly_dict.get(exponent) is None:
         poly_dict[exponent] = coefficient
@@ -178,7 +207,8 @@ def polynomial_str_to_dict(polynomial: str) -> dict:
     poly_dict = {}
     current_term = ""
     for i in polynomial:
-        if i == '+' or i == '-': # Adiciona o último termo no dicionário e inicia a obtenção do próximo termo
+        if i == '+' or i == '-': # Utiliza os sinais como divisória dos termos
+            # Adiciona o último termo no dicionário e inicia a obtenção do próximo termo
             add_polynomial_term_to_dict(current_term, poly_dict)
             current_term = i
         else:
@@ -186,7 +216,7 @@ def polynomial_str_to_dict(polynomial: str) -> dict:
     add_polynomial_term_to_dict(current_term, poly_dict) # Adiciona o último termo (que não tem os separadores '+' ou '-' depois dele)
     return poly_dict
 
-poly_dict = polynomial_str_to_dict("2x^3+x^2-4x+5")
+poly_dict = polynomial_str_to_dict("2x^3+x^2-x+5")
 print(poly_dict)
 
 # EXERCÍCIO 5
@@ -200,10 +230,10 @@ def polynomial_dict_to_str(polynomial: dict) -> str:
         # Trata do coeficiente:
         if coefficient == 0:
             continue
-        poly_str += '+' if coefficient > 0 else '-'
+        poly_str += '+' if coefficient > 0 else '-' # Adiciona o sinal do coeficiente na string
         absolute_value = abs(coefficient)
         if absolute_value != 1:
-            poly_str += str(absolute_value)
+            poly_str += str(absolute_value) # Adiciona o valor absoluto do coeficiente na string, implicitando o 1
         
         # Trata do expoente:
         if exponent == 0:
@@ -212,9 +242,9 @@ def polynomial_dict_to_str(polynomial: dict) -> str:
         if exponent == 1:
             continue
         poly_str += f"^{exponent}"
-        
+
     if poly_str[0] == '+':
-        poly_str = poly_str[1:]
+        poly_str = poly_str[1:] # Retira o sinal positivo do primeiro termo
     return poly_str
 
 print(polynomial_dict_to_str(poly_dict))

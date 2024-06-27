@@ -50,6 +50,14 @@ class Vector():
             new_entries.append(entry * scalar)
         return Vector(new_entries)
     
+    def __matmul__(self, other):
+        if self.length != other.length:
+            raise DimentionError()
+        result = 0
+        for i in range(self.length):
+            result += self.entries[i] * other.entries[i]
+        return result
+    
     def __sub__(self, other_vector):
         if other_vector.length != self.length:
             raise DimentionError()
@@ -145,13 +153,21 @@ class Matrix():
             new_lines.append((line*scalar).entries.copy())
         return Matrix(new_lines)
     
+    def __matmul__(self, other):
+        if self.number_of_columns != other.number_of_lines:
+            raise DimentionError()
+        
+        result = [[0 for _ in range(other.number_of_columns)] for _ in range(self.number_of_lines)]
+        for i in range(self.number_of_lines):
+            for j in range(other.number_of_columns):
+                result[i][j] = self.lines[i]@other.lines[j]
+        return result
+    
     def __str__(self):
         lines_str = []
         for line in self.lines:
             lines_str.append(str(line))
         return '\n'.join(lines_str)
-
-MIN_NUMBER = float('-inf')
 
 def build_identity_matrix(n: int) -> Matrix:
     '''
@@ -206,3 +222,65 @@ def gaussian_elimination(A: list) -> dict:
             L.change_entry(multiplier, k, i)
     
     return {'P': P, 'L': L, 'U': U}
+
+def is_basis(vectors: list) -> bool:
+    gaussian_elimination_result = gaussian_elimination(vectors)
+    U = gaussian_elimination_result['U']
+    last_line = U.lines[-1]
+    
+    has_element_different_of_zero = False
+    for entry in last_line.entries:
+        if entry != 0:
+            has_element_different_of_zero = True
+            break
+        
+    return has_element_different_of_zero
+
+def forward_substitution(L: Matrix, b: list):
+    number_of_lines = L.number_of_lines
+    y = [0 for _ in range(number_of_lines)]
+    for i in range(number_of_lines):
+        previous_terms_sum = 0.0
+        for j in range(i):
+            previous_terms_sum += L.at(i, j) * y[j]
+        y[i] = (b[i] - previous_terms_sum)/L.at(i, i)
+    return y
+
+def backward_substitution(U: Matrix, y: list):
+    number_of_lines = U.number_of_lines
+    x = [0 for _ in range(number_of_lines)]
+    for k in range(number_of_lines):
+        i = number_of_lines-k-1
+        previous_terms_sum = 0
+        for j in range(i):
+            previous_terms_sum += U.at(i, j) * x[j]
+        x[i] = (y[i] - previous_terms_sum) / U.at(i, i)
+    
+def get_inverse(matrix):
+    gaussian_elimination_result = gaussian_elimination(matrix)
+    P: Matrix = gaussian_elimination_result['P']
+    L: Matrix = gaussian_elimination_result['L']
+    U: Matrix = gaussian_elimination_result['U']
+    identity: Matrix = build_identity_matrix(U.number_of_lines)
+    inverse = [[0.0 for _ in range(U.number_of_lines)] for _ in range(U.number_of_lines)]
+    
+    for i in range(U.number_of_lines):
+        e = identity.lines[i]
+        b = (P@e)[0]
+        
+        y = forward_substitution(L, b)
+        x = backward_substitution(U, y)
+        
+        for j in range(U.number_of_lines):
+            inverse[j][i] = x[j]
+    
+    return inverse
+    
+
+def get_coordinates(v: list, base: list):
+    change_of_basis_matrix = Matrix(get_inverse(base))
+    vector = Matrix([v])
+    
+    return change_of_basis_matrix@vector[0]
+    
+    

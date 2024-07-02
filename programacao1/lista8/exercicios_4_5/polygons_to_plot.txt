@@ -1,0 +1,11 @@
+POLYGON Triangle
+color=blue
+(0, 0)
+(50, 0)
+(25, 25)
+POLYGON Square
+color=purple
+(60, 0)
+(60, 50)
+(110, 50)
+(110, 0)

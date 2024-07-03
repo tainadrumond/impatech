@@ -1,3 +1,4 @@
+# EXERCÍCIO 4
 class Point2D():
     def __init__(self, x: float, y: float):
         self.coord: tuple[float, float] = (x, y)
@@ -18,6 +19,8 @@ class Polygon():
         
 class Polygons():
     def __init__(self):
+        # Atributo polygons: Dicionário cuja chave é o nome do polígono e o valor é o objeto de Polygon correspondente.
+        # A modelagem dessa classe não permite que sejam armazenados dois objetos de Polygon diferentes com o mesmo nome.
         self.polygons: dict[str, Polygon] = {}
         
     def add_polygon(self, polygon: Polygon, name: str):
@@ -25,9 +28,20 @@ class Polygons():
     
     def remove_polygon(self, name: str):
         if self.polygons.get(name) is not None:
-            self.polygons.pop(name)
+            self.polygons.pop(name) # Retira o polígono com o nome dado do dicionário caso ele exista
             
     def save_to_file(self, filename: str):
+        '''
+        Salva os polígonos em um arquivo texto no diretório dado. 
+        O arquivo tem o seguinte formato para cada polígono salvo:
+        "
+        POLYGON {polygon name}
+        color={polygon color}
+        {(x1, y1)}
+        {[...]}
+        {(xn, yn)}
+        "
+        '''
         polygons_str = []
         for name in self.polygons.keys():
             polygon_str = f"POLYGON {name}\n"
@@ -42,20 +56,20 @@ class Polygons():
         file = open(filename, mode='r')
         content = file.read()
         
-        polygons_info = content.split("POLYGON ")
+        polygons_info = content.split("POLYGON ") # Separa o conteúdo referente a cada polígono
     
         for polygon_info in polygons_info:
-            if polygon_info == '':
+            if polygon_info == '': # Evita a manipulação de elementos vazios após a separação do conteúdo do arquivo
                 continue
             
-            lines = polygon_info.split('\n')
-            name = lines[0]
-            color = lines[1][6:] # Retira o "color="
+            lines = polygon_info.split('\n') # Pega cada linha de informação do polígono
+            name = lines[0] # A primeira linha é correspondente ao nome do polígono
+            color = lines[1][6:] # Retira o "color=" para obter apenas a string correspondente à cor
             points = []
             for point_str in lines[2:]:
-                if point_str == '':
+                if point_str == '': # Evita a manipulação de elementos vazios após a separação das linhas de coordenadas
                     continue
-                coordinates_str = point_str[1:-1].split(', ') # Retira os parêntesis e separa pela vírgula
+                coordinates_str = point_str[1:-1].split(', ') # Retira os parêntesis e separa as coordenadas pela vírgula
                 point = Point2D(float(coordinates_str[0]), float(coordinates_str[1]))
                 points.append(point)
             polygon = Polygon(points, color)

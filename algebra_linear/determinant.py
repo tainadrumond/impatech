@@ -189,98 +189,29 @@ def find_first_non_zero_pivot_line_index(A: Matrix, j: int) -> int:
             return i
     return -1
 
-def gaussian_elimination(A: list) -> dict:
+def determinant(A: list[list[float]]) -> dict:
     '''
-    Computes the gaussian elimination for matrix A and returns the matrixes P, L and U of PA = LU factorization
+    Computes the determinant of the given square matrix
     '''
     U = Matrix(A)
-    P = build_identity_matrix(U.number_of_lines)
-    matrix_of_0s = [[0 for _ in range(U.number_of_lines)] for _ in range(U.number_of_lines)]
-    L = Matrix(matrix_of_0s)
+    det = 1
     
-    number_of_pivots = min(U.number_of_columns, U.number_of_lines)
-    
-    for i in range(number_of_pivots):
+    for i in range(min(U.number_of_columns, U.number_of_lines)):
         if U.at(i, i) == 0: # If the current pivot position has a 0, then the lines are permuted
             first_non_zero_pivot_line_index = find_first_non_zero_pivot_line_index(U, i)
             if first_non_zero_pivot_line_index == -1:
-                L.change_entry(1, i, i)
-                continue # If there isn't any entry different from 0 for this column, it simply maintains the column of 0s in U
+                return 0 # If there isn't any entry different from 0 for this column, then the det is 0
             U.permut(i, first_non_zero_pivot_line_index)
-            P.permut(i, first_non_zero_pivot_line_index)
-            L.permut(i, first_non_zero_pivot_line_index)
+            det *= -1 # Changes the det based on the change of the P matrix's det
         
         multiplier = U.lines[i].at(i)
         U.change_line(U.lines[i]*(1/multiplier), i) # Changes the line i to turn the pivot into 1
-        L.change_entry(multiplier, i, i)
+        det *= multiplier # Changes the det based on the change of the L matrix's det
             
         for k in range(i+1, U.number_of_lines): # Eliminates every entry below the current column pivot
             if U.at(k, i) == 0:
                 continue
             multiplier = U.at(k, i)
             U.change_line(U.lines[k]-(U.lines[i]*multiplier), k)
-            L.change_entry(multiplier, k, i)
     
-    return {'P': P, 'L': L, 'U': U}
-
-def is_basis(vectors: list) -> bool:
-    gaussian_elimination_result = gaussian_elimination(vectors)
-    U = gaussian_elimination_result['U']
-    last_line = U.lines[-1]
-    
-    has_element_different_of_zero = False
-    for entry in last_line.entries:
-        if entry != 0:
-            has_element_different_of_zero = True
-            break
-        
-    return has_element_different_of_zero
-
-def forward_substitution(L: Matrix, b: list):
-    number_of_lines = L.number_of_lines
-    y = [0 for _ in range(number_of_lines)]
-    for i in range(number_of_lines):
-        previous_terms_sum = 0.0
-        for j in range(i):
-            previous_terms_sum += L.at(i, j) * y[j]
-        y[i] = (b[i] - previous_terms_sum)/L.at(i, i)
-    return y
-
-def backward_substitution(U: Matrix, y: list):
-    number_of_lines = U.number_of_lines
-    x = [0 for _ in range(number_of_lines)]
-    for k in range(number_of_lines):
-        i = number_of_lines-k-1
-        previous_terms_sum = 0
-        for j in range(i):
-            previous_terms_sum += U.at(i, j) * x[j]
-        x[i] = (y[i] - previous_terms_sum) / U.at(i, i)
-    
-def get_inverse(matrix):
-    gaussian_elimination_result = gaussian_elimination(matrix)
-    P: Matrix = gaussian_elimination_result['P']
-    L: Matrix = gaussian_elimination_result['L']
-    U: Matrix = gaussian_elimination_result['U']
-    identity: Matrix = build_identity_matrix(U.number_of_lines)
-    inverse = [[0.0 for _ in range(U.number_of_lines)] for _ in range(U.number_of_lines)]
-    
-    for i in range(U.number_of_lines):
-        e = identity.lines[i]
-        b = (P@e)[0]
-        
-        y = forward_substitution(L, b)
-        x = backward_substitution(U, y)
-        
-        for j in range(U.number_of_lines):
-            inverse[j][i] = x[j]
-    
-    return inverse
-    
-
-def get_coordinates(v: list, base: list):
-    change_of_basis_matrix = Matrix(get_inverse(base))
-    vector = Matrix([v])
-    
-    return change_of_basis_matrix@vector[0]
-    
-    
+    return det

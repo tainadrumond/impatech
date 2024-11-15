@@ -1,3 +1,6 @@
+'''
+Welzl algorithm with visualization for the problem of the minimum enclosing circle.
+'''
 import random
 import math
 import matplotlib.pyplot as plt
@@ -64,8 +67,6 @@ def welzl(points, boundary_points=[]):
     return result
 
 def find_minimum_enclosing_circle(points, boundary_points=[]):
-    points_copy = points[:]
-    # random.shuffle(points_copy)
     center, radius = welzl(points, boundary_points)
     return center, radius
 
@@ -76,6 +77,9 @@ def print_points(points):
     print(', '.join(p_str))
 
 def manual_step_through(points):
+    '''
+    Plots the algorithm steps with a manual step through.
+    '''
     global steps
     steps.clear()
     
@@ -88,11 +92,11 @@ def manual_step_through(points):
     ax.set_xlim(-10, 10)
     ax.set_ylim(-10, 10)
     
-    # Inicializa a figura e o círculo vazio
+    # Initialize the figure and the empty circle.
     boundary_circle = Circle((0, 0), 0, fill=False, edgecolor='red')
     ax.add_patch(boundary_circle)
     
-    # Atualiza os passos no gráfico
+    # Update the steps in the graphic
     frame = [0]
 
     def update_step(event):
@@ -103,21 +107,21 @@ def manual_step_through(points):
         else:
             return
         
-        # Limpa a área de desenho sem apagar os limites e título
-        ax.cla()  # Usando ax.cla() em vez de ax.clear()
+        # Clears the drawing area.
+        ax.cla()
         ax.set_aspect('equal')
         ax.set_xlim(-10, 10)
         ax.set_ylim(-10, 10)
 
         points, boundary_points = steps[frame[0]]
         
-        # Plota os pontos em azul e os pontos de borda em verde
+        # Plot the points in blue and the boundary points in green
         for p in points:
-            ax.plot(p.x, p.y, 'bo')  # Pontos azuis (os pontos de entrada)
+            ax.plot(p.x, p.y, 'bo')  # Blue points (entry points)
         for bp in boundary_points:
-            ax.plot(bp.x, bp.y, 'go')  # Pontos verdes (os pontos de borda)
+            ax.plot(bp.x, bp.y, 'go')  # Green points (boundary points)
 
-        # Calcula o círculo mínimo baseado nos pontos de borda
+        # Calculate the minimum enclosing circle with the boundary points
         if len(boundary_points) == 2:
             c, r = circle_from_two_points(boundary_points[0], boundary_points[1])
         elif len(boundary_points) == 3:
@@ -125,13 +129,13 @@ def manual_step_through(points):
         else:
             c, r = Point(0, 0), 0
 
-        # Desenha o círculo com as coordenadas de centro e raio calculados
+        # Draw the circle with the calculated radius and center coordinates
         circle = Circle((c.x, c.y), r, fill=False, edgecolor='red')
         ax.add_patch(circle)
         
         plt.draw()
 
-    # Liga os eventos de teclado à função de atualização de passo
+    # Connect keyboard event with the steps
     fig.canvas.mpl_connect('key_press_event', update_step)
     plt.show()
     plt.draw()
@@ -139,18 +143,5 @@ def manual_step_through(points):
     return frame[0]
 
 
-# mylist = [
-#     Point(1, 0),            # A
-#     Point(0.309, 0.951),    # B
-#     Point(-0.809, 0.588),   # C
-#     Point(-0.809, -0.588),  # D
-#     Point(0.309, -0.951)    # E
-# ]
-
-# t = manual_step_through(mylist)
-# print(t)
-
 test_points = [Point(random.uniform(-8, 8), random.uniform(-8, 8)) for _ in range(10)]
 manual_step_through(test_points)
-
-# print(len(steps))

@@ -59,21 +59,26 @@ while True:
         volt_esperada = float(linha.split()[0]) 
         volt_lida = float(linha.split()[1])
         
+        # Obtendo as temperaturas em graus Celsius com base na tensão
         temp_esperada = get_temp(volt_esperada)
         temp_lida = get_temp(volt_lida)
         
+        # Escrita dos dados no arquivo
         with open('dados.csv', mode='a', newline='') as arquivo:
             escritor = csv.writer(arquivo)
             escritor.writerow([temp_esperada,temp_lida,prev_u])
         
+        # Cálculo da próxima tensão a ser aplicada com base no PI
         curr_u = get_u(prev_u, volt_lida, volt_esperada, prev_e, kp, ki, tempo)
 
+        # Aplicando as tensões na fonte
         fonte.write(f":APPL CH1,{curr_u},0.5")
         print(f"Setando canal 1 para {curr_u}V")
         
         fonte.write(f":APPL CH2,{curr_u*1.44},0.5")
         print(f"Setando canal 2 para {curr_u*(2**(1/2))}V")
         
+        # Salvando as variáveis para a próxima iteração
         prev_u = curr_u
         prev_e = volt_lida - volt_esperada 
         

@@ -1,0 +1,74 @@
+function CASE_0() {
+    for i in [r+1, n]
+        if (d(v_i) < d_i) and (v_r isn't neighbor of v_i)
+            create edge v_r-v_i
+}
+
+function CASE_1() {
+    for i in [1, r-1]
+        if v_r isn't neighbor of v_i
+            find u different from v_r that is neighbor of v_i and isn't neighbor of v_r
+            if d_r - d(v_r) >= 2
+                remove edge v_i-u
+                create edge v_r-v_i
+                create edge v_r-u
+            if d_r - d(v_r) < 2
+                for k in [r+1, n]
+                    if d(v_k) < d_k
+                        if v_r isn't neighbor of v_k
+                            apply CASE_0
+                        else
+                            remove edge v_r-v_k
+                            remove edge v_i-u
+                            create edge v_r-u
+                            create edge v_r-v_i
+                        break
+}
+
+function CASE_2() {
+    for k in [r+1, n]
+        if d(v_k) != min{r, d_k}
+            if v_r isn't neighbor of v_k
+                apply CASE_0
+            else
+                for i in [1, r-1]
+                    if v_k isn't neighbor of v_i
+                        find u different from v_r that is neighbor of v_i and isn't neighbor of v_r
+                        remove edge v_i-u
+                        create edge v_r-u
+                        create edge v_i-v_k
+                        break
+}
+
+function CASE_3 {
+    for i in [1, r-1]
+        for j in [i+1, r-1]
+            if v_i isn't neighbor of v_j
+                if v_i and v_j are neighbors of v_r
+                    find u different from v_r that is neighbor of v_i and isn't neighbor of v_r
+                    find w different from v_r that is neighbor of v_j and isn't neighbor of v_r
+                    if u,w are in (v_{r+1}, v_{r+2}, ..., v_n)
+                        remove edge v_i-u
+                        remove edge v_j-w
+                        create edge v_i-v_j
+                        create edge v_r-u
+                    else
+                        apply CASE_1
+                else
+                    apply CASE_1
+
+                break
+}
+
+r=1
+while r<=n
+    if d(v_r) < d_r
+        apply CASE_0
+    if d(v_r) < d_r
+        apply CASE_1
+    if d(v_r) < d_r
+        apply CASE_2
+    if d(v_r) < d_r
+        apply CASE_3
+    r = r+1
+

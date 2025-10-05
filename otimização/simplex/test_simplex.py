@@ -119,6 +119,6 @@ tipo = [
 for i in range(len(ex)):
     print(f'\nExemplo: {ex[i]}')
     x_sol, opt_sol = solve_lp(tipo[i], A[i], b[i], c[i], zobj[i], comp[i], x[i])
-    # print(f'Solução (seu solver): x = {x_sol}')
-    # print(f'Valor ótimo (seu solver): z = {opt_sol}')
+    print(f'Solução (seu solver): x = {x_sol}')
+    print(f'Valor ótimo (seu solver): z = {opt_sol}')
     print('-----------------------------------')

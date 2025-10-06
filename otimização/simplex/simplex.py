@@ -3,6 +3,7 @@ from numpy.typing import NDArray
 from typing import Literal
 from simplex_phase1 import phase_one_simplex
 from simplex_phase2 import phase_two_simplex
+from standard_equality_form import to_standard_equality_form
 
 def solve_lp(
     type: Literal["min", "max"],
@@ -38,8 +39,13 @@ def solve_lp(
             Optimal value of the objective function.
     '''
     try: 
-        # Step 0: Phase 1 - find a basic feasible solution
-        A, b, B = phase_one_simplex(A, b)
+        # Step 0: Convert to standard equality form first
+        A, b, c = to_standard_equality_form(type, A, b, c, restriction_types, non_negative_variables)
+        
+        B = phase_one_simplex(A, b)
+        
+        if B is None:
+            return None, "infeasible"
         
         # Step 1: Phase 2 - solve the original problem starting from the basic feasible solution found in Phase 1
         return phase_two_simplex(type, B, A, b, c, z, restriction_types, non_negative_variables)

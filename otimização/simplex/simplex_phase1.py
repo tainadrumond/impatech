@@ -1,84 +1,84 @@
 import numpy as np
 from numpy.typing import NDArray
-from typing import Tuple, List
-from simplex_phase2 import phase_two_simplex  # seu método Phase 2
 
-def phase_one_simplex(
-    A: NDArray[np.float64],
-    b: NDArray[np.float64],
-    tol: float = 1e-8
-) -> Tuple[NDArray[np.float64], NDArray[np.float64], List[int]]:
+def phase_one_simplex(A: NDArray[np.float64], b: NDArray[np.float64]):
     """
-    Phase One of the Simplex Method to find an initial basic feasible solution.
-    Assumes the problem is already in Standard Equality Form (SEF).
-    Parameters:
-        A : 2D array (m x n)
-            Coefficient matrix of the constraints.
-        b : 1D array (m)
-            Right-hand side vector of the constraints.
-        tol : float
-            Tolerance for detecting zero.
+    Simplex Phase I: finds an initial feasible basis for Ax = b, x >= 0.
+
     Returns:
-        A_new : 2D array
-            Updated coefficient matrix with artificial variables removed.
-        b : 1D array
-            Right-hand side vector (unchanged).
-        B : list[int]
-            Indices of the basis columns in the updated matrix.
+        feasible_basis : list[int] or None if the LP is infeasible.
     """
-
     m, n = A.shape
-    artificial_vars = []
 
-    # Step 1: Add artifiacial variables to each constraint
-    for i in range(m):
-        col = np.zeros((m, 1))
-        col[i, 0] = 1.0
-        A = np.hstack((A, col))
-        artificial_vars.append(n + i)
+    # Add artificial variables to each constraint
+    I_art = np.eye(m)
+    A1 = np.hstack((A, I_art))
+    c1 = np.zeros(n + m)
+    c1[n:] = 1.0  # Minimize the sum of artificial variables
 
-    # Step 2: Objective function for Phase 1 to minimize sum of artificial variables
-    c_aux = np.zeros(A.shape[1])
-    for var in artificial_vars:
-        c_aux[var] = 1.0
-    z_aux = 0.0
+    # Initial basis: artificial variables
+    B = list(range(n, n + m))
+    N = [j for j in range(n)]
 
-    # Step 3: Initialize basis with artificial variables
-    B_aux = artificial_vars.copy()
+    max_iter = 1000
+    for _ in range(max_iter):
+        # Step 1: Compute inverse of the current basis matrix
+        A_B = A1[:, B]
+        try:
+            A_B_inv = np.linalg.inv(A_B)
+        except np.linalg.LinAlgError:
+            return None
 
-    # Step 4: Solve the auxiliary problem using Phase 2 Simplex
-    x_aux, opt_value = phase_two_simplex(
-        type="min",
-        B=B_aux,
-        A=A,
-        b=b,
-        c=c_aux,
-        z=z_aux,
-        restriction_types=['='] * m,
-        non_negative_variables=[True] * A.shape[1]
-    )
+        # Basic feasible solution
+        x_B = A_B_inv @ b
 
-    # Step 5: Check if is unfeasible
-    if opt_value is None or opt_value > tol:
-        raise ValueError("No feasible solution found; the original problem may be infeasible.")
+        # Step 2: Compute reduced costs
+        c_B = c1[B]
+        c_N = c1[N]
+        y = c_B @ A_B_inv
+        reduced_costs = c_N - y @ A1[:, N]
 
-    # Step 6: Remove artificial variables
-    A_new = np.delete(A, artificial_vars, axis=1)
+        # Step 3: Check optimality (all reduced costs ≥ 0 → optimum)
+        if np.all(reduced_costs >= -1e-10):
+            # Verify if artificial variables remaining in basis are zero
+            for i, j in enumerate(B):
+                if j >= n and abs(x_B[i]) > 1e-10:
+                    return None  # infeasible
+            break
 
-    # Remove artificial variables from basis
-    B_new = []
-    for idx in B_aux:
-        if idx not in artificial_vars:
-            B_new.append(idx)
-            
-    # If the basis is not complete, add other variables to complete it
-    remaining = [i for i in range(A_new.shape[1]) if i not in B_new]
-    while len(B_new) < m:
-        for i in remaining:
-            trial_B = B_new + [i]
-            if np.linalg.matrix_rank(A_new[:, trial_B], tol=tol) == len(trial_B):
-                B_new.append(i)
-                remaining.remove(i)
-                break
+        # Step 4: Choose entering variable (most negative reduced cost)
+        enter_idx = np.argmin(reduced_costs)
+        entering = N[enter_idx]
 
-    return A_new, b, B_new
+        # Step 5: Compute direction vector
+        direction = A_B_inv @ A1[:, entering]
+        if np.all(direction <= 1e-10):
+            return None  # unbounded (should not occur in Phase I)
+
+        # Step 6: Minimum ratio test
+        ratios = [(x_B[i] / direction[i], i) for i in range(m) if direction[i] > 1e-10]
+        if not ratios:
+            return None
+        _, leave_pos = min(ratios, key=lambda x: (x[0], x[1]))
+        leaving = B[leave_pos]
+
+        # Step 7: Update basis and non-basis sets
+        B[leave_pos] = entering
+        N[enter_idx] = leaving
+        B.sort()
+        N.sort()
+
+    # Step 8: Extract feasible basis for the original problem
+    feasible_B = [j for j in B if j < n]
+
+    # Step 9: Complete the basis if necessary
+    if len(feasible_B) < m:
+        for j in range(n):
+            if j not in feasible_B:
+                trial_basis = feasible_B + [j]
+                if np.linalg.matrix_rank(A[:, trial_basis]) == len(trial_basis):
+                    feasible_B = trial_basis
+                    if len(feasible_B) == m:
+                        break
+
+    return feasible_B if len(feasible_B) == m else None

@@ -36,8 +36,6 @@ def phase_two_simplex(
     Returns:
         A : 2D array
     '''
-    # Step 0: Convert to standard equality form first
-    A, b, c = to_standard_equality_form(type, A, b, c, restriction_types, non_negative_variables)
     
     m, n = A.shape
     N = [j for j in range(n) if j not in B]

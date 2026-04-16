@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio SVG</title>
+</head>
+<style>
+    svg {
+        background-color: rgb(122, 235, 241);
+        display: block;
+        margin: auto;
+    }
+
+    #vaquita-titulo {
+        color: rgb(50, 87, 89);
+    }
+</style>
+<body>
+    <h1 id="vaquita-titulo">Vaquita</h1>
+    <h2>Desafio 2 - SVG - Transformações Geométricas</h2>
+    <p>Tainá Isabela Queiroz Drumond</p>
+    <p>Computação Gráfica, IMPA Tech - Professora: Asla Medeiros e Sá</p>
+
+    <p>Este trabalho é profundamente inspirado nas exibições criadas pelo projeto <a href="http://www.species-in-pieces.com/#">Species in Pieces</a>, ao qual atribuo inteiramente os créditos de concepção design.</p>
+    
+    <svg width="750" height="600" style="border: 1px solid black;">
+        <!-- bolhas -->
+        <g>
+            <g>
+                <g transform="matrix(1, 0, 0, 1, 150, 550)">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="1; 0; 0; 0" keyTimes="0; 0.25; 0.5; 0.75" dur="4s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+                <g transform="matrix(1.2, 0, 0, 1.2, 150, 400)" opacity="0">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="0; 1; 0; 0" keyTimes="0; 0.25; 0.5; 0.75" dur="4s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+                <g transform="matrix(1.5, 0, 0, 1.5, 150, 250)" opacity="0">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="0; 0; 1; 0" keyTimes="0; 0.25; 0.5; 0.75" dur="4s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+                <g transform="matrix(2, 0, 0, 2, 150, 100)" opacity="0">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="0; 0; 0; 1" keyTimes="0; 0.25; 0.5; 0.75" dur="4s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+            </g>
+
+            <g>
+                <g transform="matrix(0.5, 0, 0, 0.5, 280, 580)">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="1; 0; 0; 0" keyTimes="0; 0.25; 0.5; 0.75" dur="2.5s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+                <g transform="matrix(0.7, 0, 0, 0.7, 280, 430)" opacity="0">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="0; 1; 0; 0" keyTimes="0; 0.25; 0.5; 0.75" dur="2.5s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+                <g transform="matrix(1, 0, 0, 1, 280, 280)" opacity="0">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="0; 0; 1; 0" keyTimes="0; 0.25; 0.5; 0.75" dur="2.5s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+                <g transform="matrix(1.3, 0, 0, 1.3, 280, 130)" opacity="0">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="0; 0; 0; 1" keyTimes="0; 0.25; 0.5; 0.75" dur="2.5s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+            </g>
+
+            <g>
+                <g transform="matrix(0.8, 0, 0, 0.8, 480, 520)">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="1; 0; 0; 0" keyTimes="0; 0.25; 0.5; 0.75" dur="3.5s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+                <g transform="matrix(1.1, 0, 0, 1.1, 480, 380)" opacity="0">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="0; 1; 0; 0" keyTimes="0; 0.25; 0.5; 0.75" dur="3.5s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+                <g transform="matrix(1.4, 0, 0, 1.4, 480, 240)" opacity="0">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="0; 0; 1; 0" keyTimes="0; 0.25; 0.5; 0.75" dur="3.5s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+                <g transform="matrix(1.8, 0, 0, 1.8, 480, 100)" opacity="0">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="0; 0; 0; 1" keyTimes="0; 0.25; 0.5; 0.75" dur="3.5s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+            </g>
+
+            <g>
+                <g transform="matrix(1.2, 0, 0, 1.2, 650, 590)">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="1; 0; 0; 0" keyTimes="0; 0.25; 0.5; 0.75" dur="5s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+                <g transform="matrix(1.6, 0, 0, 1.6, 650, 420)" opacity="0">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="0; 1; 0; 0" keyTimes="0; 0.25; 0.5; 0.75" dur="5s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+                <g transform="matrix(2, 0, 0, 2, 650, 250)" opacity="0">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="0; 0; 1; 0" keyTimes="0; 0.25; 0.5; 0.75" dur="5s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+                <g transform="matrix(2.5, 0, 0, 2.5, 650, 80)" opacity="0">
+                    <circle cx="0" cy="0" r="5" fill="rgba(255, 255, 255, 0.7)" />
+                    <animate attributeName="opacity" values="0; 0; 0; 1" keyTimes="0; 0.25; 0.5; 0.75" dur="5s" repeatCount="indefinite" calcMode="discrete"/>
+                </g>
+            </g>
+            
+        </g>
+
+        <g>
+            <animateTransform 
+                attributeName="transform" 
+                type="translate" 
+                values="0 0; 
+                        10 0;
+                        10 0; 
+                       -30 0; 
+                        0 0" 
+                keyTimes="0; 0.2; 0.25; 0.38; 1" 
+                calcMode="spline" 
+                keySplines="0.42 0 0.58 1;
+                            0 0 1 1;
+                            0.42 0 0.58 1; 
+                            0.42 0 0.58 1" 
+                dur="5s" 
+                repeatCount="indefinite" 
+            />
+
+            <!-- conexão barbatana corpo -->
+            <polygon
+            points="375,235 230,290 460,253"
+            style="fill: rgb(50, 87, 89);"
+            />
+
+            <!-- barbatana -->
+            <polygon
+            points="400,200 350,245 400,250"
+            style="fill: rgb(3, 39, 41);"
+            />
+
+            <!-- abaixo esquerda da conexão corpo barbatana -->
+            <polygon
+            points="350,271 230,290 235,330"
+            style="fill: rgb(81, 105, 107);"
+            />
+
+            <!-- abaixo esquerda meio da conexão corpo barbatana -->
+            <polygon
+            points="350,271 235,330 330,305"
+            style="fill: rgb(116, 145, 148);"
+            />
+
+            <!-- abaixo meio da conexão corpo barbatana -->
+            <polygon
+            points="350,271 330,305 465,315"
+            style="fill: rgb(135, 180, 185);"
+            />
+
+            <!-- abaixo direita da conexão corpo barbatana -->
+            <polygon
+            points="460,253 350,271 445,280"
+            style="fill: rgb(74, 97, 99);"
+            />
+
+            <!-- abaixo direita meio da conexão corpo barbatana -->
+            <polygon
+            points="350,271 445,280 465,315"
+            style="fill: rgb(84, 113, 115);"
+            />
+
+            <!-- conexão abaixo direita meio e abaixo direta da conexão corpo barbatana -->
+            <polygon
+            points="460,253 445,280 465,315"
+            style="fill: rgb(61, 83, 84);"
+            />
+
+            <!-- conexão meio rabo -->
+            <polygon
+            points="460,253 465,315 550,302"
+            style="fill: rgb(91, 119, 120);"
+            />
+
+            <!-- conexão rabo corpo -->
+            <polygon
+            points="460,253 550,302 590,280"
+            style="fill: rgb(34, 57, 58);"
+            />
+
+            <!-- rabo superior -->
+            <polygon
+            points="575,283 609,270 658,275"
+            style="fill: rgb(56, 94, 96);"
+            />
+
+            <!-- rabo inferior -->
+            <polygon
+            points="575,283 623,292 658,275"
+            style="fill: rgb(99, 144, 146);"
+            />
+
+            <!-- frente superior -->
+            <polygon
+            points="375,235 212,287.5 230,290"
+            style="fill: rgb(4, 52, 55);"
+            />
+
+            <!-- frente meio -->
+            <polygon
+            points="212,287.5 185,340 230,290"
+            style="fill: rgb(58, 86, 87);"
+            />
+
+            <!-- conexão frente meio -->
+            <polygon
+            points="230,290 185,340 220,320"
+            style="fill: rgb(11, 42, 43);"
+            />
+
+            <!-- conexão meio esquerda e frente meio -->
+            <polygon
+            points="230,290 220,320 235,330"
+            style="fill: rgb(92, 137, 139);"
+            />
+
+            <!-- narizinho trás -->
+            <polygon
+            points="220,320 212,338 235,330"
+            style="fill: rgb(66, 81, 81);"
+            />
+
+            <!-- narizinho frente -->
+            <polygon
+            points="220,320 185,340 212,338"
+            style="fill: rgb(223, 233, 233);"
+            />
+
+            <!-- narizinho ponta -->
+            <polygon
+            points="185,340 184,348 212,338"
+            style="fill: rgb(48, 71, 72);"
+            />
+
+            <!-- baixo frente -->
+            <polygon
+            points="212,338 184,348 200,352"
+            style="fill: rgb(21, 38, 39);"
+            />
+
+            <!-- outro escurinho de baixo  -->
+            <polygon
+            points="235,330 212,338 225,341"
+            style="fill: rgb(21, 38, 39);"
+            />
+
+            <!-- baixo frente 2 -->
+            <polygon
+            points="212,338 200,352 320,352"
+            style="fill: rgb(223, 233, 233);"
+            />
+
+            <!-- acima do baixo frente 2 -->
+            <polygon
+            points="235,330 225,341 320,352"
+            style="fill: rgb(194, 209, 209);"
+            />
+
+            <!-- acima do acima do baixo frente 2 -->
+            <polygon
+            points="330,305 235,330 320,352"
+            style="fill: rgb(163, 206, 206);"
+            />
+
+            <!-- baixo meio -->
+            <polygon
+            points="330,305 320,352 450,352"
+            style="fill: rgb(223, 233, 233);"
+            />
+
+            <!-- acima do baixo meio -->
+            <polygon
+            points="330,305 450,352 465,315"
+            style="fill: rgb(207, 208, 208);"
+            />
+
+            <!-- baixo trás -->
+            <polygon
+            points="465,315 450,352 550,302"
+            style="fill: rgb(175, 209, 209);"
+            />
+
+            <!-- barbatana baixo trás -->
+            <polygon
+            points="325,352 290,352 335,390"
+            style="fill: rgb(27, 35, 35);">
+        
+            <animate 
+                attributeName="points" 
+                dur="5s" 
+                repeatCount="indefinite"
+                calcMode="spline"
+                keySplines="0.42 0 0.58 1; 0 0 1 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+                keyTimes="0; 0.2; 0.35; 0.8; 1"
+                values="
+                    325,352 290,352 335,390;  
+                    325,352 290,352 305,390;  
+                    325,352 290,352 345,390;  
+                    325,352 290,352 345,390;  
+                    325,352 290,352 335,390
+                "
+            />
+            </polygon>
+
+            <!-- barbatana baixo frente 1-->
+            <polygon
+            points="290,330 360,345 367,375"
+            style="fill: rgb(52, 68, 68);">
+            <!-- 0; 0.2; 0.25; 0.38; 1 -->
+            <animate 
+                attributeName="points" 
+                dur="5s" 
+                repeatCount="indefinite"
+                calcMode="spline"
+                keySplines="0.42 0 0.58 1; 0 0 1 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+                keyTimes="0; 0.2; 0.35; 0.8; 1"
+                values="
+                    290,330 360,345 367,375;  
+                    290,330 360,345 347,375;  
+                    290,330 360,345 377,375;  
+                    290,330 360,345 377,375;  
+                    290,330 360,345 367,375
+                "
+            />
+            </polygon>
+            
+            <!-- barbatana baixo frente 2 -->
+            <polygon
+            points="290,330 367,375 387,403"
+            style="fill: rgb(35, 45, 45);">
+            
+            <animate 
+                attributeName="points" 
+                dur="5s" 
+                repeatCount="indefinite"
+                calcMode="spline"
+                keySplines="0.42 0 0.58 1; 0 0 1 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+                keyTimes="0; 0.2; 0.35; 0.8; 1"
+                values="
+                    290,330 367,375 387,403;  
+                    290,330 347,375 347,403;  
+                    290,330 377,375 397,403;  
+                    290,330 377,375 397,403;  
+                    290,330 367,375 387,403
+                "
+            />
+            </polygon>            
+        </g>
+
+    </svg>
+
+    <h2>Uso de IA</h2>
+    <p>Utilizei modelos de linguagem para auxiliar na definição dos keySplines e para tirar dúvidas sobre as limitações da animação e sintaxe do SVG.</p>
+</body>
+</html>

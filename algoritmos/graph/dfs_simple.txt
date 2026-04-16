@@ -1,0 +1,27 @@
+# GRAFO NÃO DIRECIONADO
+
+t = 0
+
+for v in V(G):
+    pai(v) = null
+    PE(v) = 0
+    PS(v) = 0
+
+while existe v em V(G) tal que PE(v) == 0:
+    DFS(v)
+
+function DFS(v):
+    t = t+1
+    PE(v) = t
+
+    for w in N(v):
+        if PE(w) == 0:
+            visitar vw // aresta azul de profundidade
+            pai(w) = v
+            DFS(w)
+
+        else if w != pai(v) and PS(w) == 0:
+            visitar vw // aresta vermelha de retorno
+    
+    t = t+1
+    PS(v) = t

@@ -1,0 +1,37 @@
+# BUSCA EM LARGURA EM GRAFO NÃO DIRECIONADO
+
+t = 0
+F = fila vazia
+
+for v in V(G):
+    pai(v) = null
+    L(v) = 0
+
+while existe v em V(G) tal que  L(v) == 0:
+    t = t+1
+    L(v) = t
+    nivel(v) = 0
+    F.push(v)
+    BFS()
+
+function BFS():
+    while F != vazio:
+        v = F.pop()
+
+        for w in N(v):
+            if L(w) == 0:
+                visitar vw // aresta filha 
+                pai(w) = v
+                nivel(w) = nivel(v) + 1
+                t = t+1
+                L(w) = t
+                F.push(w)
+
+            else if nivel(w) == nivel(v): 
+                if pai(w) == pai(v):
+                    visitar vw // aresta irmãos
+                else:
+                    visitar vw // aresta primos
+
+            else if nivel(v) = nivel(w) + 1:
+                visitar vw // aresta tio

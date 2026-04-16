@@ -1,0 +1,35 @@
+# ALGORITMO DE DIJKSTRA
+# GRAFO BIDIRECIONADO COM ARESTAS DE PESOS NÃO NEGATIVOS
+
+F = fila de prioridade vazia
+W = matriz tal que W(i,j) = {
+                                0, caso i = j;
+                                peso da aresta (i,j), caso exista; 
+                                infinito, caso contrário    
+                            }
+
+dijkstra(z) // z é o vértice para o qual se deseja calcular a distância de todos os outros
+
+function dijkstra(z):
+    for w in V(G)\{z}:
+        L(w) = infinito // vetor de distâncias
+        pai(w) = null
+    
+    L(z) = 0
+    F.push(z)
+
+    while F != vazio:
+        v = F.pop()
+        marcar v para não ser visitado novamente
+
+        for w in N_out(v):
+            if w está marcado:
+                continue
+            
+            if w is not in F:
+                inserir w em F com prioridade L(w)
+
+            if L(w) > L(v) + W(v, w):
+                L(w) = L(v) + W(v, w)
+                pai(w) = v
+                atualizar prioridade de w em F

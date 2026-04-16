@@ -1,0 +1,64 @@
+# ACHAR ARTICULAÇÕES, PONTES E BLOCOS
+
+t = 0
+arestas = pilha vazia
+blocos = vazio
+
+for v in V(G):
+    pai(v) = null
+    PE(v) = 0
+    PS(v) = 0
+
+while existe v em V(G) tal que PE(v) == 0:
+    root_children = 0
+    DFS(v)
+
+    if root_children > 1:
+        v é articulação
+    
+    se pilha_de_arestas não vazia:
+        bloco = {}
+        enquanto pilha_de_arestas não vazia:
+            adicionar desempilha(pilha_de_arestas) a bloco
+        adicionar bloco a blocos
+
+
+function DFS(v):
+    t = t+1
+    PE(v) = t
+    back(v) = PE(v)
+
+    for w in N(v):
+
+        if PE(w) == 0:
+            visitar vw // aresta azul de profundidade
+            pai(w) = v
+
+            if v == raiz:
+                root_children += 1
+
+            empilha(pilha_de_arestas, (v,w))
+
+            DFS(w)
+
+            back(v) = min{back(v), back(w)}
+
+            if v != raiz and back(w) >= PE(v):
+                v é articulação
+                bloco = {}
+                while e != (v,w):
+                    e = desempilha(pilha_de_arestas)
+                    adicionar e em bloco
+                adicionar bloco a blocos
+            
+            if back(w) > PE(v):
+                vw é ponte
+        
+        else if w != pai(v) and PS(w) == 0:
+            visitar vw // aresta vermelha de retorno
+
+            back(v) = min{back(v), PE(w)}
+            empilha(pilha_de_arestas, (v,w))
+    
+    t = t+1
+    PS(v) = t

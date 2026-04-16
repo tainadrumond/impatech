@@ -1,0 +1,48 @@
+# DETECÇÃO DE COMPONENTES FORTEMENTE CONEXAS
+
+t = 0
+F = pilha vazia
+
+for v in V(G):
+    pai(v) = null
+    PE(v) = 0
+    PS(v) = 0
+
+while existe v em V(G) tal que PE(v) == 0:
+    DFS(v)
+
+
+function DFS(v):
+    t = t+1
+    PE(v) = t
+    old(v) = PE(v)
+
+    F.push(v)
+
+    for w in N_out(v):
+        if PE(w) == 0:
+            visitar vw // aresta azul de profundidade
+            pai(w) = v 
+            DFS(w)
+
+            old(v) = min{old(v), old(w)}
+
+        else if PS(w) == 0:
+            visitar vw // aresta vermelha de retorno
+
+            old(v) = min{old(v), PE(w)}
+        
+        else if PE(w) > PE(v):
+            visitar vw // aresta amarela de avanço
+
+        else:
+            visitar vw // aresta verde de cruzamento
+
+            if w is in F:
+                old(v) = min{old(v), PE(w)}
+    
+    if old(v) == PE(v):
+        desempilhar F até v (inclusive) --> componente fortemente conexa
+    
+    t = t+1
+    PS(v) = t
